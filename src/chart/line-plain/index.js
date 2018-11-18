@@ -11,7 +11,15 @@ import {
 
 class LinePlainChart extends Component {
   render() {
-    const { data, xAxisMargin, yAxisMargin, svgHeight, svgWidth } = this.props;
+    const {
+      data,
+      lineColors = [],
+      lineKeys = [],
+      xAxisMargin,
+      yAxisMargin,
+      svgHeight,
+      svgWidth
+    } = this.props;
     const {
       chartMarginLeft,
       chartMarginRight,
@@ -30,22 +38,30 @@ class LinePlainChart extends Component {
     // X-Axis
     const { xScale, createXAxis } = createXAxisHooks({ contentWidth, data });
     // Line.
-    const createLine = d3
-      .line()
-      .x(({ date }) => xScale(date))
-      .y(({ total }) => yScale(total))
-      .curve(d3.curveCatmullRom.alpha(0.05));
-    const line = createLine(data);
+    const createLine = key =>
+      d3
+        .line()
+        .x(({ date }) => xScale(date))
+        .y(({ [key]: value }) => yScale(value))
+        .curve(d3.curveCatmullRom.alpha(0.001))(data);
 
-    console.log(line);
+    const lines = lineKeys.map((key, index) => ({
+      key,
+      path: createLine(key),
+      stroke: lineColors[index]
+    }));
 
     return (
       <Chart viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
-        <Line
-          d={line}
-          transform={`translate(${chartMarginLeft +
-            xScale.bandwidth() / 2}, ${chartMarginTop})`}
-        />
+        {lines.map(({ key, path, stroke }) => (
+          <Line
+            key={key}
+            d={path}
+            stroke={stroke}
+            transform={`translate(${chartMarginLeft +
+              xScale.bandwidth() / 2}, ${chartMarginTop})`}
+          />
+        ))}
 
         <Ticks
           ref={createYAxis}

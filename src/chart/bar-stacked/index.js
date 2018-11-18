@@ -14,7 +14,8 @@ class BarStackedChart extends Component {
   render() {
     const {
       data,
-      stackColors,
+      stackColors = [],
+      stackKeys = [],
       xAxisMargin,
       yAxisMargin,
       svgHeight,
@@ -38,13 +39,13 @@ class BarStackedChart extends Component {
     // X-Axis
     const { xScale, createXAxis } = createXAxisHooks({ contentWidth, data });
     // Stacks.
-    const createStacks = d3.stack().keys(["apple", "banana", "potato"]);
+    const createStacks = d3.stack().keys(stackKeys);
     const stacks = createStacks(data);
 
     return (
       <Chart viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
         {stacks.map((stack, stackIndex) => (
-          <Stack>
+          <Stack key={stackIndex}>
             {stack.map(([yBottom, yTop], barIndex) => (
               <Bar
                 key={`${stackIndex}-${barIndex}`}

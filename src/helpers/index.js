@@ -12,6 +12,10 @@ export const Page = styled.main`
   }
 `;
 
+export const Button = styled.button`
+  margin: 20px;
+`;
+
 export const Chart = styled.svg`
   outline: 1px solid black;
 `;

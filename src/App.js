@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import createRandom from "lodash.random";
-import BarPlainChart from "./chart/bar-plain/";
 import BarStackedChart from "./chart/bar-stacked/";
 import LinePlainChart from "./chart/line-plain";
-import { Page } from "./helpers/";
+import { Page, Button } from "./helpers/";
 
 const createEntry = (_, index) => {
   const apple = createRandom(0, 6);
@@ -23,44 +22,55 @@ const createData = () => new Array(10).fill(0).map(createEntry);
 class App extends Component {
   state = { data: createData() };
 
+  updateData = () => this.setState(() => ({ data: createData() }));
+
   render() {
     const { data } = this.state;
-    // const shell = { x: [], y: [] };
-    // const { x: xData, y: yData } = data.reduce(
-    //   ({ x, y }, { date, total }) => ({
-    //     x: [...x, date],
-    //     y: [...y, total]
-    //   }),
-    //   shell
-    // );
+
     return (
-      <Page>
-        <BarPlainChart
-          data={data}
-          xAxisMargin={20}
-          yAxisMargin={50}
-          // From container query....
-          svgHeight={300}
-          svgWidth={500}
-        />
-        <BarStackedChart
-          data={data}
-          stackColors={["skyblue", "teal", "purple"]}
-          xAxisMargin={20}
-          yAxisMargin={50}
-          // From container query....
-          svgHeight={300}
-          svgWidth={500}
-        />
-        <LinePlainChart
-          data={data}
-          xAxisMargin={20}
-          yAxisMargin={50}
-          // From container query....
-          svgHeight={300}
-          svgWidth={500}
-        />
-      </Page>
+      <Fragment>
+        <Button onClick={this.updateData}>Update Data</Button>
+        <Page>
+          <BarStackedChart
+            data={data}
+            stackKeys={["total"]}
+            xAxisMargin={20}
+            yAxisMargin={50}
+            // From container query....
+            svgHeight={300}
+            svgWidth={500}
+          />
+          <BarStackedChart
+            data={data}
+            stackColors={["skyblue", "teal", "purple"]}
+            stackKeys={["apple", "banana", "potato"]}
+            xAxisMargin={20}
+            yAxisMargin={50}
+            // From container query....
+            svgHeight={300}
+            svgWidth={500}
+          />
+          <LinePlainChart
+            data={data}
+            lineKeys={["total"]}
+            xAxisMargin={20}
+            yAxisMargin={50}
+            // From container query....
+            svgHeight={300}
+            svgWidth={500}
+          />
+          <LinePlainChart
+            data={data}
+            lineColors={["skyblue", "teal", "purple"]}
+            lineKeys={["apple", "banana", "potato"]}
+            xAxisMargin={20}
+            yAxisMargin={50}
+            // From container query....
+            svgHeight={300}
+            svgWidth={500}
+          />
+        </Page>
+      </Fragment>
     );
   }
 }
