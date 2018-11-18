@@ -1,11 +1,22 @@
 import React, { Component } from "react";
 import createRandom from "lodash.random";
-import BarChart from "./chart/bar/";
+import BarPlainChart from "./chart/bar-plain/";
+import BarStackedChart from "./chart/bar-stacked/";
+import { Page } from "./helpers/";
 
-const createEntry = (_, index) => ({
-  date: new Date(`2018-11-${index + 1}`),
-  total: createRandom(1, 10)
-});
+const createEntry = (_, index) => {
+  const apple = createRandom(0, 6);
+  const banana = createRandom(0, 4);
+  const potato = createRandom(0, 2);
+
+  return {
+    date: new Date(`2018-11-${index + 1}`),
+    apple,
+    banana,
+    potato,
+    total: apple + banana + potato
+  };
+};
 const createData = () => new Array(10).fill(0).map(createEntry);
 
 class App extends Component {
@@ -22,8 +33,8 @@ class App extends Component {
     //   shell
     // );
     return (
-      <div>
-        <BarChart
+      <Page>
+        <BarPlainChart
           data={data}
           xAxisMargin={20}
           yAxisMargin={50}
@@ -31,7 +42,16 @@ class App extends Component {
           svgHeight={300}
           svgWidth={500}
         />
-      </div>
+        <BarStackedChart
+          data={data}
+          stackColors={["skyblue", "teal", "purple"]}
+          xAxisMargin={20}
+          yAxisMargin={50}
+          // From container query....
+          svgHeight={300}
+          svgWidth={500}
+        />
+      </Page>
     );
   }
 }
