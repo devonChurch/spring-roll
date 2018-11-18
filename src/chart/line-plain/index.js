@@ -2,24 +2,16 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import {
   Chart,
-  Bar,
-  Stack,
+  Line,
   Ticks,
   createChartScaffold,
   createYAxisHooks,
   createXAxisHooks
 } from "../../helpers/";
 
-class BarStackedChart extends Component {
+class LinePlainChart extends Component {
   render() {
-    const {
-      data,
-      stackColors,
-      xAxisMargin,
-      yAxisMargin,
-      svgHeight,
-      svgWidth
-    } = this.props;
+    const { data, xAxisMargin, yAxisMargin, svgHeight, svgWidth } = this.props;
     const {
       chartMarginLeft,
       chartMarginRight,
@@ -37,26 +29,23 @@ class BarStackedChart extends Component {
     });
     // X-Axis
     const { xScale, createXAxis } = createXAxisHooks({ contentWidth, data });
-    // Stacks.
-    const createStacks = d3.stack().keys(["apple", "banana", "potato"]);
-    const stacks = createStacks(data);
+    // Line.
+    const createLine = d3
+      .line()
+      .x(({ date }) => xScale(date))
+      .y(({ total }) => yScale(total))
+      .curve(d3.curveCatmullRom.alpha(0.05));
+    const line = createLine(data);
+
+    console.log(line);
 
     return (
       <Chart viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
-        {stacks.map((stack, stackIndex) => (
-          <Stack>
-            {stack.map(([yBottom, yTop], barIndex) => (
-              <Bar
-                key={`${stackIndex}-${barIndex}`}
-                x={chartMarginLeft + barIndex * xScale.bandwidth()}
-                y={yScale(yTop) + chartMarginTop}
-                width={xScale.bandwidth()}
-                height={contentHeight - yScale(yTop - yBottom)}
-                fill={stackColors[stackIndex]}
-              />
-            ))}
-          </Stack>
-        ))}
+        <Line
+          d={line}
+          transform={`translate(${chartMarginLeft +
+            xScale.bandwidth() / 2}, ${chartMarginTop})`}
+        />
 
         <Ticks
           ref={createYAxis}
@@ -73,4 +62,4 @@ class BarStackedChart extends Component {
   }
 }
 
-export default BarStackedChart;
+export default LinePlainChart;

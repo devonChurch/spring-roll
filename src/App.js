@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import createRandom from "lodash.random";
 import BarPlainChart from "./chart/bar-plain/";
 import BarStackedChart from "./chart/bar-stacked/";
+import LinePlainChart from "./chart/line-plain";
 import { Page } from "./helpers/";
 
 const createEntry = (_, index) => {
@@ -45,6 +46,14 @@ class App extends Component {
         <BarStackedChart
           data={data}
           stackColors={["skyblue", "teal", "purple"]}
+          xAxisMargin={20}
+          yAxisMargin={50}
+          // From container query....
+          svgHeight={300}
+          svgWidth={500}
+        />
+        <LinePlainChart
+          data={data}
           xAxisMargin={20}
           yAxisMargin={50}
           // From container query....

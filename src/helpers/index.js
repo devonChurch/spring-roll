@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 export const Page = styled.main`
   display: grid;
+  grid-gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  padding: 20px;
 
   > svg {
     width: 100%;
@@ -19,6 +21,12 @@ export const Bar = styled.rect`
 `;
 
 export const Stack = styled.g``;
+
+export const Line = styled.path`
+  fill: transparent;
+  stroke: ${({ stroke }) => stroke || "orange"};
+  stroke-width: 3;
+`;
 
 export const Ticks = styled.g`
   .domain,
