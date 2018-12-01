@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from "react";
 import createRandom from "lodash.random";
-import BarStackedChart from "./chart/bar-stacked/";
-import LinePlainChart from "./chart/line-plain";
+import Chart from "./chart/scaffold/";
+import Bar, { BarStacked } from "./chart/bar/";
+import Line from "./chart/line";
+import Area, { AreaStacked } from "./chart/area";
 import { Page, Button } from "./helpers/";
 
 const createEntry = (_, index) => {
@@ -31,44 +33,84 @@ class App extends Component {
       <Fragment>
         <Button onClick={this.updateData}>Update Data</Button>
         <Page>
-          <BarStackedChart
-            data={data}
-            stackKeys={["total"]}
+          <Chart
+            chartItems={data}
+            calcYMax={({ total }) => total}
+            calcYMin={() => 0}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
             svgHeight={300}
             svgWidth={500}
-          />
-          <BarStackedChart
-            data={data}
-            stackColors={["skyblue", "teal", "purple"]}
-            stackKeys={["apple", "banana", "potato"]}
+          >
+            {chart => (
+              <BarStacked
+                {...chart}
+                stackKeys={["apple", "banana", "potato"]}
+                stackColors={["skyblue", "teal", "purple"]}
+              />
+            )}
+          </Chart>
+          <Chart
+            chartItems={data}
+            calcYMax={({ total }) => total}
+            calcYMin={() => 0}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
             svgHeight={300}
             svgWidth={500}
-          />
-          <LinePlainChart
-            data={data}
-            lineKeys={["total"]}
+          >
+            {chart => <Bar {...chart} stackKey="total" stackColor="skyblue" />}
+          </Chart>
+          <Chart
+            chartItems={data}
+            calcYMax={({ total }) => total}
+            calcYMin={() => 0}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
             svgHeight={300}
             svgWidth={500}
-          />
-          <LinePlainChart
-            data={data}
-            lineColors={["skyblue", "teal", "purple"]}
-            lineKeys={["apple", "banana", "potato"]}
+          >
+            {chart => (
+              <AreaStacked
+                {...chart}
+                stackKeys={["apple", "banana", "potato"]}
+                stackColors={["skyblue", "teal", "purple"]}
+              />
+            )}
+          </Chart>
+          <Chart
+            chartItems={data}
+            calcYMax={({ total }) => total}
+            calcYMin={() => 0}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
             svgHeight={300}
             svgWidth={500}
-          />
+          >
+            {chart => <Area {...chart} stackKey="total" stackColor="skyblue" />}
+          </Chart>
+          <Chart
+            chartItems={data}
+            calcYMax={({ total }) => total}
+            calcYMin={() => 0}
+            xAxisMargin={20}
+            yAxisMargin={50}
+            // From container query....
+            svgHeight={300}
+            svgWidth={500}
+          >
+            {chart => (
+              <Fragment>
+                <Line {...chart} stackKey="apple" stackColor="skyblue" />
+                <Line {...chart} stackKey="banana" stackColor="teal" />
+                <Line {...chart} stackKey="potato" stackColor="purple" />
+              </Fragment>
+            )}
+          </Chart>
         </Page>
       </Fragment>
     );

@@ -32,6 +32,11 @@ export const Line = styled.path`
   stroke-width: 3;
 `;
 
+export const Area = styled.path`
+  fill: ${({ fill }) => fill || "transparent"};
+  // opacity: 0.25;
+`;
+
 export const Ticks = styled.g`
   .domain,
   .tick line {
@@ -80,11 +85,11 @@ export const createYAxisHooks = ({ yMin, yMax, contentHeight }) => {
   return { yScale, createYAxis };
 };
 
-export const createXAxisHooks = ({ contentWidth, data }) => {
+export const createXAxisHooks = ({ contentWidth, chartItems }) => {
   const xFormat = d3.timeFormat("%d");
   const xScale = d3
     .scaleBand()
-    .domain(data.map(({ date }) => date))
+    .domain(chartItems.map(({ date }) => date))
     .range([0, contentWidth]);
   const xAxis = d3
     .axisBottom(xScale)
