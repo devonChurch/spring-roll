@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-import { Line } from "../../helpers/";
+import { Dot } from "../../helpers/";
 
-class LineStandard extends Component {
+class ScatterStandard extends Component {
   render() {
     const {
       chartItems,
@@ -15,23 +15,23 @@ class LineStandard extends Component {
       contentHeight
     } = this.props;
 
-    // Line.
-    const pathData = d3
-      .line()
-      .x(({ date }) => xScale(date))
-      .y(({ [stackKey]: value }) => yScale(value))
-      .curve(d3.curveCatmullRom.alpha(0.00001))
-      (chartItems); // prettier-ignore
+    // Dots.
+    const dotData = chartItems.map(({ [stackKey]: value }, dotIndex) => ({
+      cx: dotIndex * xScale.bandwidth(),
+      cy: yScale(value)
+    }));
 
     const transformX = chartMarginLeft + xScale.bandwidth() / 2;
     const transformY = chartMarginTop;
 
     return (
       <g transform={`translate(${transformX}, ${transformY})`}>
-        <Line d={pathData} stroke={stackColor} />
+        {dotData.map(({ cx, cy }) => (
+          <Dot key={`${cx}-${cy}`} {...{ cx, cy }} r="5" fill={stackColor} />
+        ))}
       </g>
     );
   }
 }
 
-export default LineStandard;
+export default ScatterStandard;

@@ -44,11 +44,11 @@ export class AreaStacked extends Component {
     };
     const stacks = stackKeys.map(createStacks);
 
+    const transformX = chartMarginLeft + xScale.bandwidth() / 2;
+    const transformY = chartMarginTop;
+
     return (
-      <g
-        transform={`translate(${chartMarginLeft +
-          xScale.bandwidth() / 2}, ${chartMarginTop})`}
-      >
+      <g transform={`translate(${transformX}, ${transformY})`}>
         {stacks.map((stack, stackIndex) => (
           <Area key={stackIndex} d={stack} fill={stackColors[stackIndex]} />
         ))}

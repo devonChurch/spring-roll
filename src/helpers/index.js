@@ -37,6 +37,10 @@ export const Area = styled.path`
   // opacity: 0.25;
 `;
 
+export const Dot = styled.circle`
+  fill: ${({ fill }) => fill || "purple"};
+`;
+
 export const Ticks = styled.g`
   .domain,
   .tick line {

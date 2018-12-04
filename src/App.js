@@ -4,6 +4,7 @@ import Chart from "./chart/scaffold/";
 import Bar, { BarStacked } from "./chart/bar/";
 import Line from "./chart/line";
 import Area, { AreaStacked } from "./chart/area";
+import Scatter from "./chart/scatter";
 import { Page, Button } from "./helpers/";
 
 const createEntry = (_, index) => {
@@ -91,7 +92,14 @@ class App extends Component {
             svgHeight={300}
             svgWidth={500}
           >
-            {chart => <Area {...chart} stackKey="total" stackColor="skyblue" />}
+            {chart => (
+              <Fragment>
+                <Area {...chart} stackKey="total" stackColor="lightgray" />
+                <Scatter {...chart} stackKey="apple" stackColor="skyblue" />
+                <Scatter {...chart} stackKey="banana" stackColor="teal" />
+                <Scatter {...chart} stackKey="potato" stackColor="purple" />
+              </Fragment>
+            )}
           </Chart>
           <Chart
             chartItems={data}
@@ -108,6 +116,27 @@ class App extends Component {
                 <Line {...chart} stackKey="apple" stackColor="skyblue" />
                 <Line {...chart} stackKey="banana" stackColor="teal" />
                 <Line {...chart} stackKey="potato" stackColor="purple" />
+                <Scatter {...chart} stackKey="apple" stackColor="skyblue" />
+                <Scatter {...chart} stackKey="banana" stackColor="teal" />
+                <Scatter {...chart} stackKey="potato" stackColor="purple" />
+              </Fragment>
+            )}
+          </Chart>
+          <Chart
+            chartItems={data}
+            calcYMax={({ total }) => total}
+            calcYMin={() => 0}
+            xAxisMargin={20}
+            yAxisMargin={50}
+            // From container query....
+            svgHeight={300}
+            svgWidth={500}
+          >
+            {chart => (
+              <Fragment>
+                <Scatter {...chart} stackKey="apple" stackColor="skyblue" />
+                <Scatter {...chart} stackKey="banana" stackColor="teal" />
+                <Scatter {...chart} stackKey="potato" stackColor="purple" />
               </Fragment>
             )}
           </Chart>
