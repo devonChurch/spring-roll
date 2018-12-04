@@ -16,7 +16,10 @@ export class BarStacked extends Component {
     } = this.props;
 
     // Stacks.
-    const createStacks = d3.stack().keys(stackKeys);
+    const createStacks = d3
+      .stack()
+      .keys(stackKeys)
+      .offset(d3.stackOffsetDiverging);
     const stacks = createStacks(chartItems);
 
     const transformX = chartMarginLeft;
@@ -32,7 +35,7 @@ export class BarStacked extends Component {
                 x={barIndex * xScale.bandwidth()}
                 y={yScale(yTop)}
                 width={xScale.bandwidth()}
-                height={contentHeight - yScale(yTop - yBottom)}
+                height={Math.abs(yScale(0) - yScale(yTop - yBottom))}
                 fill={stackColors[stackIndex]}
               />
             ))}

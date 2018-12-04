@@ -16,7 +16,7 @@ class ScatterStandard extends Component {
     } = this.props;
 
     // Dots.
-    const dotData = chartItems.map(({ [stackKey]: value }, dotIndex) => ({
+    const dots = chartItems.map(({ [stackKey]: value }, dotIndex) => ({
       cx: dotIndex * xScale.bandwidth(),
       cy: yScale(value)
     }));
@@ -26,7 +26,7 @@ class ScatterStandard extends Component {
 
     return (
       <g transform={`translate(${transformX}, ${transformY})`}>
-        {dotData.map(({ cx, cy }) => (
+        {dots.map(({ cx, cy }) => (
           <Dot key={`${cx}-${cy}`} {...{ cx, cy }} r="5" fill={stackColor} />
         ))}
       </g>

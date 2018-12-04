@@ -33,14 +33,14 @@ export class AreaStacked extends Component {
       const getYTop = chartItem =>
         yScale(getPreviousValues(chartItem) + chartItem[stackKey]);
       const getYBottom = chartItem => yScale(getPreviousValues(chartItem));
-
-      return d3
+      const createArea = d3
         .area()
         .x(({ date }) => xScale(date))
         .y1(getYTop)
         .y0(getYBottom)
-        .curve(d3.curveCatmullRom.alpha(0.00001))
-        (chartItems); // prettier-ignore
+        .curve(d3.curveCatmullRom.alpha(0.00001));
+
+      return createArea(chartItems);
     };
     const stacks = stackKeys.map(createStacks);
 

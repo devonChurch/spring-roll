@@ -15,8 +15,8 @@ class ChartScaffold extends Component {
       chartItems,
       xAxisMargin,
       yAxisMargin,
-      calcYMax,
-      calcYMin,
+      yAxisKeys,
+      shouldYAxisMinBeZero,
       svgHeight,
       svgWidth
     } = this.props;
@@ -35,11 +35,31 @@ class ChartScaffold extends Component {
       contentWidth
     } = chartScaffold;
 
+    const getMinKeysValue = chartItem => {
+      const values = yAxisKeys.map(key => chartItem[key]);
+
+      return Math.min(...values);
+    };
+
+    const getMaxKeysValue = chartItem => {
+      const values = yAxisKeys.map(key => chartItem[key]);
+
+      return Math.max(...values);
+    };
+
+    const sanatisedYMin = (() => {
+      const rawYMin = d3.min(chartItems, getMinKeysValue);
+      const shouldBeZero = shouldYAxisMinBeZero && rawYMin > 0;
+
+      return shouldBeZero ? 0 : rawYMin;
+    })();
+
     // Y-Axis.
     const { yScale, createYAxis } = createYAxisHooks({
-      yMin: d3.min(chartItems, calcYMin),
-      yMax: d3.max(chartItems, calcYMax),
-      contentHeight
+      yMin: sanatisedYMin,
+      yMax: d3.max(chartItems, getMaxKeysValue),
+      contentHeight,
+      shouldYAxisMinBeZero
     });
     // X-Axis
     const { xScale, createXAxis } = createXAxisHooks({

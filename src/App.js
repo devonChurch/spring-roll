@@ -9,18 +9,17 @@ import { Page, Button } from "./helpers/";
 
 const createEntry = (_, index) => {
   const apple = createRandom(0, 6);
-  const banana = createRandom(0, 4);
-  const potato = createRandom(0, 2);
+  const banana = createRandom(-4, 4);
+  const potato = -createRandom(0, 2);
 
   return {
     date: new Date(`2018-11-${index + 1}`),
     apple,
     banana,
-    potato,
-    total: apple + banana + potato
+    potato
   };
 };
-const createData = () => new Array(10).fill(0).map(createEntry);
+const createData = () => new Array(7).fill(0).map(createEntry);
 
 class App extends Component {
   state = { data: createData() };
@@ -36,8 +35,8 @@ class App extends Component {
         <Page>
           <Chart
             chartItems={data}
-            calcYMax={({ total }) => total}
-            calcYMin={() => 0}
+            yAxisKeys={["apple", "banana", "potato"]}
+            shouldYAxisMinBeZero
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
@@ -54,20 +53,18 @@ class App extends Component {
           </Chart>
           <Chart
             chartItems={data}
-            calcYMax={({ total }) => total}
-            calcYMin={() => 0}
+            yAxisKeys={["apple", "banana", "potato"]}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
             svgHeight={300}
             svgWidth={500}
           >
-            {chart => <Bar {...chart} stackKey="total" stackColor="skyblue" />}
+            {chart => <Bar {...chart} stackKey="apple" stackColor="skyblue" />}
           </Chart>
           <Chart
             chartItems={data}
-            calcYMax={({ total }) => total}
-            calcYMin={() => 0}
+            yAxisKeys={["apple", "banana", "potato"]}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
@@ -84,8 +81,7 @@ class App extends Component {
           </Chart>
           <Chart
             chartItems={data}
-            calcYMax={({ total }) => total}
-            calcYMin={() => 0}
+            yAxisKeys={["apple", "banana", "potato"]}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
@@ -94,17 +90,16 @@ class App extends Component {
           >
             {chart => (
               <Fragment>
-                <Area {...chart} stackKey="total" stackColor="lightgray" />
-                <Scatter {...chart} stackKey="apple" stackColor="skyblue" />
-                <Scatter {...chart} stackKey="banana" stackColor="teal" />
+                <Area {...chart} stackKey="apple" stackColor="lightgray" />
                 <Scatter {...chart} stackKey="potato" stackColor="purple" />
+                <Scatter {...chart} stackKey="banana" stackColor="teal" />
+                <Scatter {...chart} stackKey="apple" stackColor="skyblue" />
               </Fragment>
             )}
           </Chart>
           <Chart
             chartItems={data}
-            calcYMax={({ total }) => total}
-            calcYMin={() => 0}
+            yAxisKeys={["apple", "banana", "potato"]}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....
@@ -124,8 +119,7 @@ class App extends Component {
           </Chart>
           <Chart
             chartItems={data}
-            calcYMax={({ total }) => total}
-            calcYMin={() => 0}
+            yAxisKeys={["apple", "banana", "potato"]}
             xAxisMargin={20}
             yAxisMargin={50}
             // From container query....

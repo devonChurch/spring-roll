@@ -16,19 +16,19 @@ class LineStandard extends Component {
     } = this.props;
 
     // Line.
-    const pathData = d3
+    const createLine = d3
       .line()
       .x(({ date }) => xScale(date))
       .y(({ [stackKey]: value }) => yScale(value))
-      .curve(d3.curveCatmullRom.alpha(0.00001))
-      (chartItems); // prettier-ignore
+      .curve(d3.curveCatmullRom.alpha(0.00001));
+    const line = createLine(chartItems);
 
     const transformX = chartMarginLeft + xScale.bandwidth() / 2;
     const transformY = chartMarginTop;
 
     return (
       <g transform={`translate(${transformX}, ${transformY})`}>
-        <Line d={pathData} stroke={stackColor} />
+        <Line d={line} stroke={stackColor} />
       </g>
     );
   }
